@@ -34,7 +34,7 @@ export default function IntroScreen({ onEnter }: Props) {
           transition={{ duration: 1, delay: 0.7, ease: EASE }}
           className="text-[10px] tracking-[0.35em] uppercase font-light text-[var(--color-on-surface-variant)]"
         >
-          Vol. 2024
+          Vol. 2026
         </motion.span>
       </div>
 
