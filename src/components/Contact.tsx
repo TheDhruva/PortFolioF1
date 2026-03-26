@@ -2,11 +2,11 @@ import { motion } from "framer-motion";
 
 export default function Contact() {
   return (
-    <section id="contact" className="bg-inverse-surface text-surface py-32 md:py-48 px-8 flex flex-col justify-between relative">
-      <div className="max-w-[1440px] mx-auto w-full">
+    <section id="contact" className="bg-inverse-surface text-surface px-8 min-h-[calc(100svh-var(--nav-h))] md:h-[calc(100svh-var(--nav-h))] scroll-mt-[var(--nav-h)] snap-start flex items-center relative overflow-hidden">
+      <div className="max-w-[1440px] mx-auto w-full py-8 md:py-10">
         
         {/* Split Layout Container */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-24 w-full mb-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-20 w-full mb-12 md:mb-14">
           
           {/* Left: Typography & Socials */}
           <div className="flex flex-col justify-between">

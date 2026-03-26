@@ -34,8 +34,8 @@ const projects = [
 
 export default function Projects() {
   return (
-    <section id="work" className="px-8 max-w-[1440px] mx-auto py-32 md:py-48">
-      <div className="w-full flex flex-col justify-center">
+    <section id="work" className="px-8 max-w-[1440px] mx-auto min-h-[calc(100svh-var(--nav-h))] md:h-[calc(100svh-var(--nav-h))] scroll-mt-[var(--nav-h)] snap-start flex items-center">
+      <div className="w-full flex flex-col justify-center py-8 md:py-10">
         
         {/* Section Header */}
         <motion.div 
@@ -54,7 +54,7 @@ export default function Projects() {
         </motion.div>
 
         {/* Accordion Container */}
-        <div className="flex flex-col md:flex-row h-[70vh] md:h-[600px] gap-4 w-full">
+        <div className="flex flex-col md:flex-row h-[56vh] md:h-[min(52vh,540px)] gap-4 w-full">
           {projects.map((proj) => (
             <div 
               key={proj.id}

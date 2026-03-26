@@ -52,16 +52,18 @@ export default function IntroScreen({ onEnter }: IntroScreenProps) {
       </div>
 
       {/* Interactive Interaction Hint */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.6 }}
-        transition={{ duration: 1, delay: 1.5 }}
-        className="absolute bottom-12 flex flex-col items-center gap-6 animate-pulse group-hover:opacity-100 transition-opacity duration-700"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1.8, repeat: Infinity, repeatType: "reverse", repeatDelay: 3 }}
+        className="absolute bottom-20 flex flex-col items-center gap-6 group-hover:opacity-100 transition-opacity duration-700"
       >
         <span className="font-label text-[9px] tracking-[0.5em] uppercase font-medium text-primary">
           Enter Experience
         </span>
-        <ChevronDown className="text-primary w-6 h-6" />
+        <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+          <ChevronDown className="text-primary w-6 h-6" />
+        </motion.div>
       </motion.div>
 
       {/* Visual Anchor Elements (Bento-style background depth) */}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>THE DHRUVA — Cinematic Experience</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-container": "#e3e2e7",
+              "inverse-surface": "#0c0e10",
+              "primary-dim": "#535254",
+              "on-error": "#fff7f6",
+              "tertiary-fixed": "#dcd2f4",
+              "on-error-container": "#752121",
+              "secondary-fixed-dim": "#d5d4d9",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#d6d3d6",
+              "surface-container-highest": "#dde3e9",
+              "on-primary-fixed": "#3f3f41",
+              "primary-container": "#e4e2e4",
+              "inverse-primary": "#ffffff",
+              "surface-container-low": "#f2f4f6",
+              "tertiary-container": "#dcd2f4",
+              "surface": "#f9f9fb",
+              "surface-container": "#ebeef2",
+              "tertiary-fixed-dim": "#cec5e5",
+              "error": "#9f403d",
+              "on-tertiary-container": "#4d4762",
+              "error-dim": "#4e0309",
+              "outline": "#757c81",
+              "background": "#f9f9fb",
+              "on-primary": "#faf7f9",
+              "surface-variant": "#dde3e9",
+              "secondary-fixed": "#e3e2e7",
+              "on-primary-fixed-variant": "#5c5b5d",
+              "on-secondary-fixed": "#3e3f44",
+              "surface-tint": "#5f5e60",
+              "secondary": "#5e5f63",
+              "on-primary-container": "#525154",
+              "on-surface": "#2d3338",
+              "on-secondary-fixed-variant": "#5b5b60",
+              "on-secondary": "#faf8fe",
+              "primary": "#5f5e60",
+              "outline-variant": "#acb3b8",
+              "surface-container-high": "#e4e9ee",
+              "on-background": "#2d3338",
+              "inverse-on-surface": "#9c9d9f",
+              "surface-bright": "#f9f9fb",
+              "error-container": "#fe8983",
+              "on-tertiary": "#fdf7ff",
+              "on-tertiary-fixed-variant": "#57506c",
+              "tertiary-dim": "#564f6b",
+              "on-surface-variant": "#596065",
+              "on-tertiary-fixed": "#3a344e",
+              "secondary-dim": "#525357",
+              "primary-fixed": "#e4e2e4",
+              "surface-dim": "#d3dbe2",
+              "tertiary": "#625b77",
+              "on-secondary-container": "#515156"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9fb;
+            overflow: hidden;
+        }
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .cinematic-gradient {
+            background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f2f4f6 100%);
+            animation: pulse-gradient 15s ease infinite alternate;
+        }
+        @keyframes pulse-gradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+        }
+        .tight-display {
+            letter-spacing: -0.06em;
+            line-height: 0.9;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface select-none">
+<div class="grain-overlay"></div>
+<!-- Navigation Shell (Suppressed for landing focus as per UX rules) -->
+<!-- Predicted Shared Component: TopNavBar will be hidden here due to "Landing Intent" suppression logic -->
+<!-- Main Cinematic Canvas -->
+<main class="relative h-screen w-full flex flex-col items-center justify-center cinematic-gradient cursor-pointer group" onclick="this.style.opacity='0'; this.style.transition='opacity 1.5s cubic-bezier(0.16,1,0.3,1)'; setTimeout(()=&gt;window.location.reload(), 1500)">
+<!-- Top Accessory Info -->
+<div class="fixed top-12 left-0 w-full flex justify-between px-12 z-10 pointer-events-none">
+<span class="text-[10px] tracking-[0.3em] uppercase font-light text-on-surface-variant opacity-60">Creative Portfolio</span>
+<span class="text-[10px] tracking-[0.3em] uppercase font-light text-on-surface-variant opacity-60">Vol. 2024</span>
+</div>
+<!-- Central Epicenter -->
+<div class="relative flex flex-col items-center text-center px-6">
+<div class="overflow-hidden">
+<h1 class="font-black text-on-surface tight-display text-[clamp(4rem,15vw,14rem)] uppercase" style="transform: translateY(0);">
+                    THE DHRUVA
+                </h1>
+</div>
+<div class="mt-8 flex flex-col items-center gap-4">
+<p class="font-label text-[11px] tracking-[0.4em] uppercase font-light text-on-surface-variant max-w-xs leading-loose">
+                    Curating high-performance digital environments for the avant-garde
+                </p>
+<div class="h-px w-12 bg-outline-variant/30 mt-4"></div>
+</div>
+</div>
+<!-- Interactive Interaction Hint -->
+<div class="fixed bottom-12 flex flex-col items-center gap-6 animate-pulse transition-opacity duration-700 group-hover:opacity-100 opacity-60">
+<span class="font-label text-[9px] tracking-[0.5em] uppercase font-medium text-primary">Enter Experience</span>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-primary scale-125" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<!-- Visual Anchor Elements (Bento-style background depth) -->
+<div class="absolute inset-0 z-[-1] overflow-hidden pointer-events-none">
+<div class="absolute top-1/4 -right-20 w-[40vw] h-[40vw] bg-surface-container-low rounded-full blur-[120px] opacity-40"></div>
+<div class="absolute -bottom-20 -left-20 w-[50vw] h-[50vw] bg-surface-container-highest rounded-full blur-[140px] opacity-30"></div>
+</div>
+</main>
+<!-- Content Hidden Section (To be revealed after transition) -->
+<section class="opacity-0 pointer-events-none fixed inset-0 flex items-center justify-center bg-inverse-surface text-surface">
+<div class="max-w-4xl text-center px-12">
+<h2 class="font-headline text-5xl font-bold tracking-tight mb-8">Redefining the digital boundary.</h2>
+<p class="font-body text-surface-variant/70 text-lg leading-relaxed">The transition from cream to charcoal marks the start of our journey through the curated archives of THE DHRUVA.</p>
+</div>
+</section>
+<!-- Footer Shell (Standard Mapping) -->
+<footer class="fixed bottom-0 w-full z-20 pointer-events-none flex justify-between items-end px-12 py-10">
+<div class="flex flex-col gap-1">
+<span class="text-[9px] tracking-[0.2em] font-medium uppercase text-on-surface-variant/40">Established</span>
+<span class="text-[10px] tracking-[0.1em] font-medium text-on-surface">MCMXCVI</span>
+</div>
+<div class="flex gap-8 items-center pointer-events-auto">
+<a class="text-[10px] tracking-[0.2em] uppercase font-light text-on-surface-variant hover:text-primary transition-colors" href="#">Archive</a>
+<a class="text-[10px] tracking-[0.2em] uppercase font-light text-on-surface-variant hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+</footer>
+<!-- Cinematic Overlay Image for Texture Depth -->
+<div class="hidden">
+<!-- Background Asset for feel, not directly visible -->
+<img class="opacity-0" data-alt="Soft focused macro of architectural concrete with smooth light and shadow gradients in a neutral cream and white palette" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuAiZyuJdwtae6Me7wEn7cQ3nbuwAUNKl6F2uenyXG8QGoT3FVXTADVO2u_LTvg-qPrcbAY4qd8guaxAxot_UB8Th4jQAlSSEaR_oD4Kkr2KlYRhb3whNT0vMlrgIYfN5FciceF-bMFsKYoCmWlrJkwohDKuA9Lins0COq9m6q9fjjrsFVMfYAYutBpzve32jhS6ArvrBW0ZxGApYxneHra30ZJ-X2NnvH3N4D9suNKDjJNviiouW8LgErqQWWAdtLtjnZEAl-rCr6"/>
+</div>
+</body></html>

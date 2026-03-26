@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth snap-y snap-mandatory" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>THE DHRUVA — Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-container": "#e3e2e7",
+              "inverse-surface": "#0c0e10",
+              "primary-dim": "#535254",
+              "on-error": "#fff7f6",
+              "tertiary-fixed": "#dcd2f4",
+              "on-error-container": "#752121",
+              "secondary-fixed-dim": "#d5d4d9",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#d6d3d6",
+              "surface-container-highest": "#dde3e9",
+              "on-primary-fixed": "#3f3f41",
+              "primary-container": "#e4e2e4",
+              "inverse-primary": "#ffffff",
+              "surface-container-low": "#f2f4f6",
+              "tertiary-container": "#dcd2f4",
+              "surface": "#f9f9fb",
+              "surface-container": "#ebeef2",
+              "tertiary-fixed-dim": "#cec5e5",
+              "error": "#9f403d",
+              "on-tertiary-container": "#4d4762",
+              "error-dim": "#4e0309",
+              "outline": "#757c81",
+              "background": "#f9f9fb",
+              "on-primary": "#faf7f9",
+              "surface-variant": "#dde3e9",
+              "secondary-fixed": "#e3e2e7",
+              "on-primary-fixed-variant": "#5c5b5d",
+              "on-secondary-fixed": "#3e3f44",
+              "surface-tint": "#5f5e60",
+              "secondary": "#5e5f63",
+              "on-primary-container": "#525154",
+              "on-surface": "#2d3338",
+              "on-secondary-fixed-variant": "#5b5b60",
+              "on-secondary": "#faf8fe",
+              "primary": "#5f5e60",
+              "outline-variant": "#acb3b8",
+              "surface-container-high": "#e4e9ee",
+              "on-background": "#2d3338",
+              "inverse-on-surface": "#9c9d9f",
+              "surface-bright": "#f9f9fb",
+              "error-container": "#fe8983",
+              "on-tertiary": "#fdf7ff",
+              "on-tertiary-fixed-variant": "#57506c",
+              "tertiary-dim": "#564f6b",
+              "on-surface-variant": "#596065",
+              "on-tertiary-fixed": "#3a344e",
+              "secondary-dim": "#525357",
+              "primary-fixed": "#e4e2e4",
+              "surface-dim": "#d3dbe2",
+              "tertiary": "#625b77",
+              "on-secondary-container": "#515156"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .grain-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .scroll-progress {
+            position: fixed;
+            top: 0; left: 0; height: 2px;
+            background: #5f5e60;
+            width: 0%;
+            z-index: 100;
+            transition: width 0.1s ease;
+        }
+        .project-column {
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+        .project-column:hover {
+            flex-grow: 4;
+        }
+        .project-details {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease 0.2s;
+        }
+        .project-column:hover .project-details {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .btn-hover-effect {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-hover-effect:hover {
+            transform: scale(1.02);
+        }
+        .text-underline-reveal {
+            position: relative;
+        }
+        .text-underline-reveal::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 1px;
+            bottom: -2px; left: 50%;
+            background: currentColor;
+            transition: all 0.3s ease;
+        }
+        .text-underline-reveal:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        .snap-section {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        @media (min-aspect-ratio: 16/9) {
+            .snap-section {
+                height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased overflow-x-hidden selection:bg-primary/20">
+<div class="grain-overlay"></div>
+<div class="scroll-progress" id="progress-bar"></div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-zinc-950/80 backdrop-blur-xl shadow-[0_20px_80px_rgba(12,14,16,0.06)] dark:shadow-none">
+<div class="flex justify-between items-center px-8 py-6 max-w-[1440px] mx-auto w-full">
+<div class="font-['Inter'] font-black tracking-tighter text-xl text-zinc-900 dark:text-white">THE DHRUVA</div>
+<div class="hidden md:flex gap-12">
+<a class="font-['Inter'] tracking-tight font-medium uppercase text-[11px] text-zinc-900 dark:text-white border-b border-zinc-900 dark:border-white pb-1" href="#work">Work</a>
+<a class="font-['Inter'] tracking-tight font-medium uppercase text-[11px] text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" href="#skills">Skills</a>
+<a class="font-['Inter'] tracking-tight font-medium uppercase text-[11px] text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" href="#about">About</a>
+<a class="font-['Inter'] tracking-tight font-medium uppercase text-[11px] text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" href="#contact">Contact</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-zinc-800 dark:text-zinc-100 cursor-pointer hover:opacity-70 transition-opacity duration-300">menu</span>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="snap-section px-8 pt-24 max-w-[1440px] mx-auto overflow-hidden" id="home">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center w-full">
+<div class="flex flex-col gap-8">
+<div class="flex flex-col gap-2">
+<span class="font-label uppercase tracking-[0.2em] text-[10px] text-on-surface-variant">Creative Technologist &amp; AI Architect</span>
+<h1 class="font-headline text-6xl md:text-8xl font-black tracking-[-0.04em] leading-[1.1] text-on-surface">
+                        Designing<br/>Digital<br/>Poetry.
+                    </h1>
+</div>
+<p class="font-body text-lg text-on-surface-variant max-w-md leading-relaxed">
+                    A multi-disciplinary developer crafting high-performance digital experiences through the lens of minimalist editorial design and cinematic movement.
+                </p>
+<div class="flex gap-6 mt-4">
+<button class="bg-primary text-on-primary rounded-full px-10 py-4 font-label uppercase text-[11px] tracking-widest btn-hover-effect shadow-lg shadow-primary/10">Resume</button>
+<button class="bg-transparent text-on-surface border border-outline-variant/30 rounded-full px-10 py-4 font-label uppercase text-[11px] tracking-widest btn-hover-effect hover:bg-surface-container-low">GitHub</button>
+</div>
+</div>
+<div class="relative group">
+<div class="absolute -inset-4 bg-surface-container-low rounded-xl -z-10 group-hover:bg-surface-container-high transition-colors duration-700"></div>
+<img alt="The Dhruva Profile" class="w-full aspect-[4/5] md:aspect-[5/6] object-cover rounded-lg grayscale brightness-105 contrast-110" data-alt="Minimalist professional portrait of a man in a dark grey turtleneck against a soft grey architectural background with clean lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD85Xqq3uRdXOBozR7AZeUFNuCaX-uikunf44djDdgdUgvRkCiD4DPcl3CI4zKV29Mr7mdBFy4M69IqEht5HrEB2GYE7giBANUnbvGeoSTctDv5fOFcJCohSbu-7GR1wwMEI1Ni_gMWZqYSJhxE1VZ3Ra3C2ZFXZJ0uMFds5VN7Bu6atuTcgHj06DowzmxCrl-ujgOJEINOAWeAe9Zg0DS7HXW3hRvhn49x4pustAlQMpmgPL_yyB8cO8XdFswVTX4m7cN66b4Hqtn-"/>
+</div>
+</div>
+</header>
+<!-- Projects Section -->
+<section class="snap-section px-8 max-w-[1440px] mx-auto py-24" id="work">
+<div class="w-full flex flex-col justify-center">
+<div class="flex flex-col gap-4 mb-12">
+<span class="font-label uppercase tracking-[0.2em] text-[10px] text-on-surface-variant">Selected Works 23—24</span>
+<h2 class="font-headline text-5xl font-bold tracking-tight text-on-surface">Digital Archive</h2>
+</div>
+<div class="flex flex-col md:flex-row h-[60vh] md:h-[550px] gap-4 w-full group/container">
+<!-- Project 1 -->
+<div class="project-column flex-1 relative bg-surface-container-low rounded-xl cursor-pointer group">
+<img alt="Project 1" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 grayscale transition-opacity duration-700" data-alt="Abstract cinematic background with flowing fluid shapes in muted metallic charcoal and silver tones with subtle grain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg0jKyRpcC3nQK4jYJ-T5m2CuwB6LqR_FkOXZrcJ4Wkpz6gnJFh5qpmOJW6-CfbpEuGA89MsBjiZtGL98V8Q5Zg2EzTkMWpQgs--hx2mEuTfcNgRK_wnUk41QWE-VHAYvZWTdUCLgZSP4FB7iZfSyfM_5D6s28yfnxDG9xS8mNhb7zy3tuYMULqARdYFphje6lKwW3-xnvwiqHdZ0cQ7mZlTI2x4P2B8E41tng6x0Br5vyqEE1VrsPnOGZbfCUo13Cev5gK7gy6dpt"/>
+<div class="absolute inset-0 p-8 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label text-white bg-black/40 backdrop-blur px-3 py-1 rounded text-[9px]">01</span>
+<span class="material-symbols-outlined text-white/50 group-hover:text-white transition-colors">north_east</span>
+</div>
+<div class="flex flex-col gap-6">
+<h3 class="font-headline text-2xl font-bold text-on-surface group-hover:text-white transition-colors">NEO-FLOW</h3>
+<div class="project-details flex flex-col gap-4">
+<p class="text-on-surface-variant group-hover:text-white/80 text-xs max-w-xs leading-relaxed">A generative motion engine built for luxury brand showcases.</p>
+<div class="flex flex-wrap gap-2">
+<span class="text-[9px] uppercase tracking-tighter text-on-surface-variant group-hover:text-white/60">React</span>
+<span class="text-[9px] uppercase tracking-tighter text-on-surface-variant group-hover:text-white/60">Three.js</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Project 2 -->
+<div class="project-column flex-1 relative bg-surface-container-low rounded-xl cursor-pointer group">
+<img alt="Project 2" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 grayscale transition-opacity duration-700" data-alt="Modern workstation with multiple high-end monitors showing code and creative interfaces in a dimly lit tech environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5Ai3AbqBjCFDIZyHZD7AjkUoC0nB_g4Mf55g-fu6kbJwaDcPiCOwOI4fiBxBRTbRuT4wfCpI44v_CNY4D46AStJrX6N-Mm521dAf7SjeKdR8ilNNrPT-xyYQwhj4qRFYdf1NFaGfo6EuCizD53-9_0M983XcWwIqKkrS1e74KlvStlL4X-H2QqVicxFmGIcXleyeoRCmOSnklY96RUT7qDOjRmk3_EpG63_ED8Ao3hX2vGk1ZFwKjzbC05os9ovm7VDDhq6Lfw0YW"/>
+<div class="absolute inset-0 p-8 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label text-white bg-black/40 backdrop-blur px-3 py-1 rounded text-[9px]">02</span>
+<span class="material-symbols-outlined text-white/50 group-hover:text-white transition-colors">north_east</span>
+</div>
+<div class="flex flex-col gap-6">
+<h3 class="font-headline text-2xl font-bold text-on-surface group-hover:text-white transition-colors">KINETIC OS</h3>
+<div class="project-details flex flex-col gap-4">
+<p class="text-on-surface-variant group-hover:text-white/80 text-xs max-w-xs leading-relaxed">Experimental operating system interface focused on spatial computing.</p>
+<div class="flex flex-wrap gap-2">
+<span class="text-[9px] uppercase tracking-tighter text-on-surface-variant group-hover:text-white/60">Next.js</span>
+<span class="text-[9px] uppercase tracking-tighter text-on-surface-variant group-hover:text-white/60">Framer</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Project 3 -->
+<div class="project-column flex-1 relative bg-surface-container-low rounded-xl cursor-pointer group">
+<img alt="Project 3" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 grayscale transition-opacity duration-700" data-alt="Abstract complex mathematical geometry visual represented as glowing threads in dark space, symbolizing AI neural networks" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2sr4RMmpmacLSg6t99VAjwOpXgQtJ6yCYNLRJs03sDE5tvmIS1aAcebmj18P4nQQc57M7GlHsCyET7EcjUrDbAyls_HvPBiUQUQlNYGxGtVi3BJWFeHiq5nipBnSklILuIDaClUebjPNhuvxYD31v7rWi8XwG2XFy1qFnD1MrK4X_GvXk3JxLGYStb86FSzmIWT0fT84nLc4W3qfMK2_mcBnYZ7qC9mSLNw7jj8ws_GIrNdS10ZiS4kDjHiorFww9tBnEGcWIqhbf"/>
+<div class="absolute inset-0 p-8 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label text-white bg-black/40 backdrop-blur px-3 py-1 rounded text-[9px]">03</span>
+<span class="material-symbols-outlined text-white/50 group-hover:text-white transition-colors">north_east</span>
+</div>
+<div class="flex flex-col gap-6">
+<h3 class="font-headline text-2xl font-bold text-on-surface group-hover:text-white transition-colors">SYNTH-AI</h3>
+<div class="project-details flex flex-col gap-4">
+<p class="text-on-surface-variant group-hover:text-white/80 text-xs max-w-xs leading-relaxed">A custom LLM orchestration layer for high-end creative studios.</p>
+<div class="flex flex-wrap gap-2">
+<span class="text-[9px] uppercase tracking-tighter text-on-surface-variant group-hover:text-white/60">Python</span>
+<span class="text-[9px] uppercase tracking-tighter text-on-surface-variant group-hover:text-white/60">FastAPI</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Project 4 -->
+<div class="project-column flex-1 relative bg-surface-container-low rounded-xl cursor-pointer group">
+<img alt="Project 4" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 grayscale transition-opacity duration-700" data-alt="Macro photography of sleek black curved architectural materials with soft lighting highlights and high-end texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDe-4hXM8wILs_DYl9FOIQgXAUZ74duZqfLWxpMxNBuOInehLK8wCv2Uk05C0T14zZ6y-hAlabayKimNhuqfIlGYeoz-_GgvKZRjDD63YYerqrd0Mt136wimXxe0qubYKKEC07GmgrDCI-meV5R2KuoxbE5m9UfXzcJOKc49oSWl5RiBJTLISTf3llKF3fFYlN4ugiFLHGis4v-XQLeFOWzmWPUynWJRgFpWzQSMO6-CDHamYi97XlTCkEy4SNacCXmK_gbQFL2cG1v"/>
+<div class="absolute inset-0 p-8 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label text-white bg-black/40 backdrop-blur px-3 py-1 rounded text-[9px]">04</span>
+<span class="material-symbols-outlined text-white/50 group-hover:text-white transition-colors">north_east</span>
+</div>
+<div class="flex flex-col gap-6">
+<h3 class="font-headline text-2xl font-bold text-on-surface group-hover:text-white transition-colors">MONOLITH</h3>
+<div class="project-details flex flex-col gap-4">
+<p class="text-on-surface-variant group-hover:text-white/80 text-xs max-w-xs leading-relaxed">An e-commerce framework for architecture firms.</p>
+<div class="flex flex-wrap gap-2">
+<span class="text-[9px] uppercase tracking-tighter text-on-surface-variant group-hover:text-white/60">Vue.js</span>
+<span class="text-[9px] uppercase tracking-tighter text-on-surface-variant group-hover:text-white/60">Stripe</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Dark Mode Content Starts Here -->
+<div class="bg-inverse-surface text-surface">
+<!-- Capabilities Section -->
+<section class="snap-section px-8 max-w-[1440px] mx-auto py-24" id="skills">
+<div class="w-full">
+<div class="flex flex-col gap-4 mb-20">
+<span class="font-label uppercase tracking-[0.2em] text-[10px] text-zinc-500">Technical Arsenal</span>
+<h2 class="font-headline text-5xl font-bold tracking-tight text-white">Capabilities</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 md:grid-rows-2 gap-6 h-auto md:h-[600px]">
+<!-- Frameworks -->
+<div class="md:col-span-7 md:row-span-1 bg-zinc-900/50 border border-zinc-800/50 p-10 rounded-xl hover:bg-zinc-800 transition-colors duration-500 flex items-center gap-12 group">
+<span class="material-symbols-outlined text-6xl text-zinc-700 group-hover:text-white transition-colors font-extralight">polyline</span>
+<div class="flex flex-col gap-3">
+<h4 class="font-headline text-2xl font-medium tracking-tight">Frameworks</h4>
+<p class="text-zinc-500 text-sm leading-relaxed max-w-md">React, Next.js, Vue, Tailwind, Framer Motion.</p>
+</div>
+</div>
+<!-- AI/ML -->
+<div class="md:col-span-5 md:row-span-2 bg-zinc-900/50 border border-zinc-800/50 p-10 rounded-xl hover:bg-zinc-800 transition-colors duration-500 flex flex-col justify-between group">
+<span class="material-symbols-outlined text-7xl text-zinc-700 group-hover:text-white transition-colors font-extralight self-end">model_training</span>
+<div class="flex flex-col gap-4">
+<h4 class="font-headline text-3xl font-medium tracking-tight">AI / ML</h4>
+<p class="text-zinc-500 text-sm leading-relaxed">LLM Orchestration, PyTorch, Scikit-learn, OpenAI API, Generative Audio/Video pipelines.</p>
+</div>
+</div>
+<!-- Cloud -->
+<div class="md:col-span-4 md:row-span-1 bg-zinc-900/50 border border-zinc-800/50 p-10 rounded-xl hover:bg-zinc-800 transition-colors duration-500 flex flex-col justify-center gap-4 group">
+<span class="material-symbols-outlined text-5xl text-zinc-700 group-hover:text-white transition-colors font-extralight">stat_0</span>
+<div class="flex flex-col gap-2">
+<h4 class="font-headline text-xl font-medium tracking-tight">Infrastructure</h4>
+<p class="text-zinc-500 text-sm leading-relaxed">AWS, Vercel, Docker, PostgreSQL, Redis.</p>
+</div>
+</div>
+<!-- Social Skills -->
+<div class="md:col-span-3 md:row-span-1 bg-zinc-900/50 border border-zinc-800/50 p-10 rounded-xl hover:bg-zinc-800 transition-colors duration-500 flex flex-col justify-center gap-4 group">
+<span class="material-symbols-outlined text-5xl text-zinc-700 group-hover:text-white transition-colors font-extralight">stylus_laser</span>
+<div class="flex flex-col gap-2">
+<h4 class="font-headline text-xl font-medium tracking-tight">Leadership</h4>
+<p class="text-zinc-500 text-sm leading-relaxed">Technical writing, public speaking.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact & Footer Integrated Section -->
+<section class="snap-section px-8 max-w-[1440px] mx-auto flex flex-col justify-between pt-32" id="contact">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-24 w-full">
+<div class="flex flex-col justify-between">
+<div class="flex flex-col gap-8">
+<span class="font-label uppercase tracking-[0.2em] text-[10px] text-zinc-500">Inquiries</span>
+<h2 class="font-headline text-6xl font-bold tracking-tight text-white leading-tight">Let's build<br/>the future.</h2>
+</div>
+<div class="flex flex-col gap-8 mt-16 md:mt-0">
+<div class="flex gap-12">
+<a class="text-underline-reveal text-sm font-label uppercase tracking-widest text-zinc-400" href="#">LinkedIn</a>
+<a class="text-underline-reveal text-sm font-label uppercase tracking-widest text-zinc-400" href="#">Twitter</a>
+<a class="text-underline-reveal text-sm font-label uppercase tracking-widest text-zinc-400" href="#">Dribbble</a>
+</div>
+<p class="text-zinc-600 text-[11px] font-label uppercase tracking-widest">Available for select commissions 2024</p>
+</div>
+</div>
+<div class="bg-zinc-900/50 p-10 rounded-2xl backdrop-blur-sm border border-zinc-800/30">
+<form class="flex flex-col gap-8">
+<div class="flex flex-col gap-2">
+<label class="font-label text-[10px] uppercase tracking-widest text-zinc-500">Name</label>
+<input class="bg-transparent border-b border-zinc-800 focus:border-white transition-colors py-3 outline-none text-white text-base font-light placeholder:text-zinc-700" placeholder="Your Name" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label text-[10px] uppercase tracking-widest text-zinc-500">Email Address</label>
+<input class="bg-transparent border-b border-zinc-800 focus:border-white transition-colors py-3 outline-none text-white text-base font-light placeholder:text-zinc-700" placeholder="hello@example.com" type="email"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label text-[10px] uppercase tracking-widest text-zinc-500">Message</label>
+<textarea class="bg-transparent border-b border-zinc-800 focus:border-white transition-colors py-3 outline-none text-white text-base font-light placeholder:text-zinc-700 resize-none" placeholder="How can I help?" rows="3"></textarea>
+</div>
+<button class="bg-white text-black rounded-full py-4 font-label uppercase text-[11px] tracking-[0.2em] font-bold btn-hover-effect mt-4">Send Message</button>
+</form>
+</div>
+</div>
+<!-- Integrated Slim Footer -->
+<footer class="w-full py-12 border-t border-zinc-800/30 mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="font-['Inter'] text-[9px] tracking-[0.2em] uppercase font-light text-zinc-500">© 2024 THE DHRUVA — CURATED EXPERIENCE</div>
+<div class="flex gap-8">
+<a class="font-['Inter'] text-[9px] tracking-[0.2em] uppercase font-light text-zinc-500 hover:text-white transition-all duration-500" href="#">Archive</a>
+<a class="font-['Inter'] text-[9px] tracking-[0.2em] uppercase font-light text-zinc-500 hover:text-white transition-all duration-500" href="#">LinkedIn</a>
+<a class="font-['Inter'] text-[9px] tracking-[0.2em] uppercase font-light text-zinc-500 hover:text-white transition-all duration-500" href="#">Layers</a>
+<a class="font-['Inter'] text-[9px] tracking-[0.2em] uppercase font-light text-zinc-500 hover:text-white transition-all duration-500" href="#">Contact</a>
+</div>
+</div>
+</footer>
+</section>
+</div>
+<script>
+        // Simple scroll progress bar update
+        window.onscroll = function() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+            
+            // Invert scroll bar color as we enter the dark section
+            if (winScroll > window.innerHeight * 1.5) {
+                document.getElementById("progress-bar").style.backgroundColor = "#ffffff";
+            } else {
+                document.getElementById("progress-bar").style.backgroundColor = "#5f5e60";
+            }
+        };
+    </script>
+</body></html>
