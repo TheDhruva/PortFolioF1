@@ -1,37 +1,41 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 export default function ScrollProgress() {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [shouldShowWhite, setShouldShowWhite] = useState(false);
+  const [progress, setProgress]       = useState(0);
+  const [isDarkSection, setIsDark]    = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      setScrollProgress(scrollPercent);
+    // Listen on the snap scroll container, not window
+    const container = document.getElementById("scroll-container");
+    if (!container) return;
 
-      // Determine if we're in the dark section (Skills or Contact)
-      // Dark sections typically start around 60-70% scroll
-      setShouldShowWhite(scrollPercent > 55);
+    const onScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const total = scrollHeight - clientHeight;
+      const pct   = total > 0 ? (scrollTop / total) * 100 : 0;
+      setProgress(pct);
+      // Skills + Contact sections are roughly the last 50 % of scroll
+      setIsDark(pct > 48);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    container.addEventListener("scroll", onScroll, { passive: true });
+    return () => container.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <motion.div
-      className={`fixed top-0 left-0 h-[2px] z-40 transition-colors duration-300 ${
-        shouldShowWhite ? "bg-inverse-primary" : "bg-primary"
-      }`}
-      style={{ width: `${scrollProgress}%` }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.5, duration: 0.8 }}
+    <div
+      aria-hidden="true"
+      className="fixed top-0 left-0 h-[2px] z-[60] pointer-events-none"
+      style={{
+        width: `${progress}%`,
+        background: isDarkSection
+          ? "var(--color-inverse-primary)"
+          : "var(--color-primary)",
+        transition: "width 0.1s linear, background 0.4s ease",
+      }}
     />
   );
 }
