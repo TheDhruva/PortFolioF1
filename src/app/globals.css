@@ -3,59 +3,57 @@
 
 /* ── Design Tokens ──────────────────────────────────────────── */
 :root {
-  --color-surface:                 #f9f9fb;
-  --color-surface-bright:          #ffffff;
-  --color-surface-container-low:   #f2f4f6;
-  --color-surface-container:       #ebeef2;
-  --color-surface-container-high:  #e4e9ee;
+  --color-surface:                   #f9f9fb;
+  --color-surface-bright:            #ffffff;
+  --color-surface-container-low:     #f2f4f6;
+  --color-surface-container:         #ebeef2;
+  --color-surface-container-high:    #e4e9ee;
   --color-surface-container-highest: #dde3e9;
-  --color-surface-dim:             #d3dbe2;
-  --color-surface-variant:         #dde3e9;
-  --color-inverse-surface:         #0c0e10;
+  --color-surface-dim:               #d3dbe2;
+  --color-surface-variant:           #dde3e9;
+  --color-inverse-surface:           #0c0e10;
 
-  --color-primary:                 #5f5e60;
-  --color-primary-dim:             #535254;
-  --color-primary-fixed:           #e4e2e4;
-  --color-on-primary:              #faf7f9;
-  --color-inverse-primary:         #ffffff;
+  --color-primary:                   #5f5e60;
+  --color-primary-dim:               #535254;
+  --color-primary-fixed:             #e4e2e4;
+  --color-on-primary:                #faf7f9;
+  --color-inverse-primary:           #ffffff;
 
-  --color-secondary:               #5e5f63;
-  --color-on-secondary:            #faf8fe;
-  --color-secondary-container:     #e3e2e7;
+  --color-secondary:                 #5e5f63;
+  --color-on-secondary:              #faf8fe;
+  --color-secondary-container:       #e3e2e7;
 
-  --color-tertiary:                #625b77;
-  --color-on-tertiary:             #fdf7ff;
-  --color-tertiary-container:      #dcd2f4;
-  --color-on-tertiary-container:   #4d4762;
+  --color-tertiary:                  #625b77;
+  --color-on-tertiary:               #fdf7ff;
+  --color-tertiary-container:        #dcd2f4;
+  --color-on-tertiary-container:     #4d4762;
 
-  --color-on-surface:              #2d3338;
-  --color-on-surface-variant:      #596065;
-  --color-inverse-on-surface:      #9c9d9f;
+  --color-on-surface:                #2d3338;
+  --color-on-surface-variant:        #596065;
+  --color-inverse-on-surface:        #9c9d9f;
 
-  --color-outline:                 #757c81;
-  --color-outline-variant:         #acb3b8;
+  --color-outline:                   #757c81;
+  --color-outline-variant:           #acb3b8;
 
-  --color-background:              #f9f9fb;
-  --color-on-background:           #2d3338;
+  --color-background:                #f9f9fb;
+  --color-on-background:             #2d3338;
 
-  --color-error:                   #9f403d;
-  --color-on-error:                #fff7f6;
-  --color-error-container:         #fe8983;
+  --color-error:                     #9f403d;
+  --color-on-error:                  #fff7f6;
+  --color-error-container:           #fe8983;
 
   --font-headline: 'Inter', sans-serif;
   --font-body:     'Inter', sans-serif;
   --font-label:    'Inter', sans-serif;
 
-  --radius:    0.125rem;
-  --radius-lg: 0.25rem;
-  --radius-xl: 0.5rem;
+  --radius:      0.125rem;
+  --radius-lg:   0.25rem;
+  --radius-xl:   0.5rem;
   --radius-full: 0.75rem;
 }
 
 /* ── Global Base ────────────────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 html {
   scroll-behavior: smooth;
@@ -68,15 +66,20 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  /*
+   * Body overflow hidden — ALL scrolling happens inside #scroll-container.
+   * This prevents the browser scrollbar from ever appearing on the page.
+   */
+  overflow: hidden;
 }
 
-::selection {
-  background-color: rgba(95, 94, 96, 0.15);
-}
+::selection { background-color: rgba(95, 94, 96, 0.15); }
 
-/* ── Cinematic Grain Overlay ────────────────────────────────── */
-/*  Applied via className="grain-overlay" on a fixed <div>      */
+/* ── ✦ Hide ALL scrollbars — aesthetic requirement ───────────── */
+*                   { scrollbar-width: none; -ms-overflow-style: none; }
+*::-webkit-scrollbar { display: none; }
+
+/* ── Grain Overlay ──────────────────────────────────────────── */
 .grain-overlay {
   position: fixed;
   inset: 0;
@@ -91,44 +94,33 @@ body {
   background: radial-gradient(ellipse at 50% 40%, #ffffff 0%, #f0f2f4 60%, #e8eaee 100%);
 }
 
-/* ── Snap Scroll Sections ───────────────────────────────────── */
-.snap-container {
-  height: 100svh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-
+/* ── Snap Section ───────────────────────────────────────────── */
+/*
+ * Each section is EXACTLY 100svh so snap points are clean.
+ * overflow:hidden clips content that would otherwise push the next
+ * snap point out of alignment.
+ */
 .snap-section {
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  height: 100svh;
+  overflow: hidden;
 }
 
-/* ── Ghost Shadow (nav / modals) ────────────────────────────── */
-.ghost-shadow {
-  box-shadow: 0 20px 80px rgba(12, 14, 16, 0.06);
-}
+/* ── Ghost Shadow ───────────────────────────────────────────── */
+.ghost-shadow { box-shadow: 0 20px 80px rgba(12, 14, 16, 0.06); }
 
-/* ── Tight Display Heading ──────────────────────────────────── */
-.tracking-tightest {
-  letter-spacing: -0.06em;
-}
+/* ── Display Typography ─────────────────────────────────────── */
+.tracking-tightest { letter-spacing: -0.06em; }
 
-/* ── Underline Reveal ───────────────────────────────────────── */
-.underline-reveal {
-  position: relative;
-}
+/* ── Underline Reveal (center → outward) ───────────────────── */
+.underline-reveal { position: relative; }
 .underline-reveal::after {
   content: '';
   position: absolute;
-  width: 0;
-  height: 1px;
-  bottom: -2px;
-  left: 50%;
+  width: 0; height: 1px;
+  bottom: -2px; left: 50%;
   background: currentColor;
   transition: width 0.35s ease, left 0.35s ease;
 }
-.underline-reveal:hover::after {
-  width: 100%;
-  left: 0;
-}
+.underline-reveal:hover::after { width: 100%; left: 0; }

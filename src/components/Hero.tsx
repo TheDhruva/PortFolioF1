@@ -5,7 +5,6 @@ import Image from "next/image";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-/* Stagger container / child variants */
 const container = {
   hidden: {},
   show:   { transition: { staggerChildren: 0.09, delayChildren: 0.25 } },
@@ -19,20 +18,26 @@ export default function Hero() {
   return (
     <section
       id="home"
+      /*
+       * snap-section = h-[100svh] via globals.css.
+       * pt-[var(--nav-h)] clears the fixed navbar.
+       * flex items-center vertically centres the grid.
+       */
       className="snap-section flex items-center
-                 min-h-[calc(100svh-var(--nav-h))] scroll-mt-[var(--nav-h)]
-                 px-8 pt-[var(--nav-h)] max-w-[1440px] mx-auto overflow-hidden"
+                 px-8 pt-[var(--nav-h)]
+                 max-w-[1440px] mx-auto w-full"
+      style={{ maxWidth: "100%" }}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center w-full py-10 md:py-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-20
+                      items-center w-full max-w-[1440px] mx-auto py-6">
 
-        {/* ── LEFT: Copy + CTAs ────────────────────────────────── */}
+        {/* ── Left: Copy + CTAs ─────────────────────────────── */}
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="flex flex-col gap-10"
+          className="flex flex-col gap-8"
         >
-          {/* Overline */}
           <motion.span
             variants={item}
             className="uppercase tracking-[0.22em] text-[10px]
@@ -41,8 +46,8 @@ export default function Hero() {
             Creative Technologist &amp; AI Architect
           </motion.span>
 
-          {/* Headline — each word clips up independently */}
-          <div className="flex flex-col gap-0 overflow-hidden">
+          {/* Word-by-word clip reveal */}
+          <div className="flex flex-col overflow-hidden">
             {["Creating", "Scalable", "Impact."].map((word, i) => (
               <div key={word} className="overflow-hidden">
                 <motion.span
@@ -50,7 +55,7 @@ export default function Hero() {
                   animate={{ y: "0%" }}
                   transition={{ duration: 1, delay: 0.3 + i * 0.1, ease: EASE }}
                   className="block font-black tracking-[-0.045em] leading-[1.05]
-                             text-[clamp(2.8rem,6.5vw,6.5rem)]
+                             text-[clamp(2.6rem,6vw,6rem)]
                              text-[var(--color-on-surface)]"
                 >
                   {word}
@@ -59,19 +64,17 @@ export default function Hero() {
             ))}
           </div>
 
-          {/* Body */}
           <motion.p
             variants={item}
             className="text-base md:text-lg text-[var(--color-on-surface-variant)]
                        max-w-md leading-relaxed font-light"
           >
             Crafting intelligent digital systems through AI, modern web technologies,
-and clean, performance-driven design.
+            and clean, performance-driven design.
           </motion.p>
 
-          {/* CTAs */}
-          <motion.div variants={item} className="flex flex-wrap gap-4 mt-2">
-            {/* Primary — metallic pill */}
+          <motion.div variants={item} className="flex flex-wrap gap-4 mt-1">
+            {/* Primary CTA */}
             <motion.a
               href="/resume.pdf"
               target="_blank"
@@ -82,12 +85,12 @@ and clean, performance-driven design.
               className="px-10 py-3.5 rounded-full font-medium uppercase tracking-[0.14em] text-[11px]
                          bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dim)]
                          text-[var(--color-on-primary)]
-                         shadow-[0_20px_60px_rgba(12,14,16,0.1)] inline-block cursor-pointer text-center"
+                         shadow-[0_16px_48px_rgba(12,14,16,0.12)] inline-block"
             >
               Resume
             </motion.a>
 
-            {/* Ghost */}
+            {/* Ghost CTA */}
             <motion.a
               href="https://www.linkedin.com/in/thedhruva/"
               target="_blank"
@@ -98,35 +101,32 @@ and clean, performance-driven design.
               className="px-10 py-3.5 rounded-full font-medium uppercase tracking-[0.14em] text-[11px]
                          border border-[var(--color-outline-variant)]/40
                          text-[var(--color-on-surface)]
-                         hover:bg-[var(--color-surface-container-low)] transition-colors duration-300 inline-block cursor-pointer text-center"
+                         hover:bg-[var(--color-surface-container-low)] transition-colors duration-300 inline-block"
             >
               LinkedIn
             </motion.a>
           </motion.div>
         </motion.div>
 
-        {/* ── RIGHT: Image ─────────────────────────────────────── */}
+        {/* ── Right: Image ──────────────────────────────────── */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.6, delay: 0.4, ease: EASE }}
-          className="relative group"
+          className="relative group hidden md:block"
         >
-          {/* Tonal backing plate */}
           <motion.div
-            className="absolute -inset-6 md:-inset-8 bg-[var(--color-surface-container-low)]
-                       rounded-2xl -z-10"
+            className="absolute -inset-6 bg-[var(--color-surface-container-low)] rounded-2xl -z-10"
             whileHover={{ backgroundColor: "var(--color-surface-container-high)" }}
             transition={{ duration: 0.5 }}
           />
-
           <Image
             src="/profile.jpg"
             alt="Dhruva — profile"
-            width={1000}
-            height={1200}
+            width={800}
+            height={800}
             priority
-            className="w-full aspect-[7/5] md:aspect-[7/6] object-cover rounded-xl
+            className="w-full aspect-[7/6] object-cover rounded-xl
                        grayscale brightness-105 contrast-105
                        group-hover:grayscale-0 transition-all duration-700"
           />
