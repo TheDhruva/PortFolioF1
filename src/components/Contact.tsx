@@ -193,6 +193,7 @@ export default function Contact() {
                 <a
                   key={lbl}
                   href={lbl === "Back to top" ? "#home" : "#"}
+                  onMouseEnter={() => play("buttonHover")}
                   onClick={() => play("buttonClick")}
                   className="uppercase tracking-[0.18em] text-[9px] font-light
                              text-[var(--color-outline-variant)]/50

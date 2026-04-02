@@ -129,6 +129,7 @@ export default function NavBar() {
           <a
             key={item.href}
             href={item.href}
+            onMouseEnter={() => play("buttonHover")}
             onClick={() => { setOpen(false); play("buttonClick"); }}
             className="uppercase tracking-[0.12em] text-[11px] font-medium
                        py-3 text-[var(--color-on-surface-variant)]

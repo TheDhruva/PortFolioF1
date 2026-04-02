@@ -18,10 +18,13 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useAudio } from "@/context/AudioContext";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function Hero() {
+  const { play } = useAudio();
+
   return (
     <section
       id="home"
@@ -75,6 +78,8 @@ export default function Hero() {
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
+              onMouseEnter={() => play("buttonHover")}
+              onClick={() => play("buttonClick")}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.28, ease: EASE }}
@@ -92,6 +97,8 @@ export default function Hero() {
               href="https://www.linkedin.com/in/thedhruva/"
               target="_blank"
               rel="noopener noreferrer"
+              onMouseEnter={() => play("buttonHover")}
+              onClick={() => play("buttonClick")}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.28, ease: EASE }}
@@ -108,7 +115,10 @@ export default function Hero() {
         </div>
 
         {/* ── Right: Profile image (hidden on mobile) ────────── */}
-        <div className="relative group hidden md:block hero-image">
+        <div
+          className="relative group hidden md:block hero-image"
+          onMouseEnter={() => play("cursorHover")}
+        >
           {/* Tonal background glow */}
           <div className="absolute -inset-5 lg:-inset-6
                           bg-[var(--color-surface-container-low)] rounded-2xl -z-10

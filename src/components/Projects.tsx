@@ -19,6 +19,7 @@
 
 import { Globe, ExternalLink, ArrowUpRight } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import { useAudio } from "@/context/AudioContext";
 
 const PROJECTS = [
   {
@@ -65,6 +66,7 @@ export default function Projects() {
    * the viewport. CSS then animates .reveal and .card-reveal children.
    */
   const sectionRef = useInView<HTMLElement>();
+  const { play }   = useAudio();
 
   return (
     <section
@@ -109,6 +111,7 @@ export default function Projects() {
           {PROJECTS.map(proj => (
             <div
               key={proj.id}
+              onMouseEnter={() => play("cursorHover")}
               className="project-col card-reveal
                          flex-[1] hover:flex-[4]
                          relative overflow-hidden rounded-2xl
@@ -156,7 +159,8 @@ export default function Projects() {
                       href={proj.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      onClick={e => e.stopPropagation()}
+                      onMouseEnter={() => play("buttonHover")}
+                      onClick={e => { e.stopPropagation(); play("buttonClick"); }}
                       className="w-8 h-8 rounded-full bg-white/10
                                  border border-white/15 flex items-center justify-center
                                  hover:bg-white/20 transition-colors duration-200"
@@ -169,7 +173,8 @@ export default function Projects() {
                         href={proj.live}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={e => e.stopPropagation()}
+                        onMouseEnter={() => play("buttonHover")}
+                        onClick={e => { e.stopPropagation(); play("buttonClick"); }}
                         className="h-8 px-3 rounded-full bg-white/10
                                    border border-white/15 flex items-center gap-1.5
                                    hover:bg-white/20 transition-colors duration-200"
