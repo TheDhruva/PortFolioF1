@@ -20,7 +20,7 @@ Tech stack: **Next.js · Python · TypeScript · OpenAI API · XGBoost · Convex
 
 ## 🚀 Live Portfolio
 
-🔗 **[thedhruva.vercel.app](https://thedhruva.vercel.app/)** *(replace with your live URL)*
+🔗 **[thedhruva.vercel.app](https://the-dhruva-portfolio.vercel.app/)** 
 
 Cinematic single-page experience — snap-section scroll, audio engine, CSS-driven entrance animations, and an intro gate. Optimized for performance with lazy-loaded sections and zero backdrop-filter GPU cost.
 
