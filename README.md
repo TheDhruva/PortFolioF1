@@ -1,41 +1,39 @@
 # Dhruva Portfolio
 
-A cinematic, single-page personal portfolio built with Next.js, Tailwind CSS v4, and Framer Motion.
+Cinematic single-page portfolio built with Next.js (App Router), React 19, Tailwind CSS v4, and Framer Motion.
 
-## What We Are Building
+## Overview
 
-This project is a high-aesthetic portfolio experience with:
+This project focuses on visual storytelling and smooth transitions:
 
-1. A cinematic intro gate before entering the site.
-2. Full-screen section storytelling (Hero, Projects, Skills, Contact).
-3. Smooth motion system using editorial pacing and staggered reveals.
-4. A fixed top navbar with layout-safe section sizing.
+1. Intro gate before the main page is revealed.
+2. Full-screen snap sections for Hero, Projects, Skills, and Contact.
+3. Fixed navbar with section-safe spacing.
+4. Scroll progress indicator tied to the snap container.
 
-Layout rule used across main sections:
+Core layout rule:
 
-$$
-	ext{section height} = 100svh - \text{navbar height}
-$$
+```text
+section height = 100svh
+top padding = --nav-h (fixed navbar height)
+```
 
-This keeps content visible without being hidden behind the header.
+## Tech Stack
+
+1. Next.js 16.2.1
+2. React 19.2.4
+3. TypeScript 5
+4. Tailwind CSS v4
+5. Framer Motion
+6. Lucide React
+7. ESLint 9
 
 ## Requirements
 
 1. Node.js 20+
 2. npm 10+
-3. Modern browser (Chrome, Edge, Firefox, Safari)
 
-## Tech Stack
-
-1. Next.js 16 (App Router)
-2. React 19
-3. TypeScript 5
-4. Tailwind CSS v4
-5. Framer Motion
-6. Lucide React (icons)
-7. ESLint 9
-
-## Quick Start
+## Local Development
 
 Install dependencies:
 
@@ -43,25 +41,25 @@ Install dependencies:
 npm install
 ```
 
-Run development server:
+Run dev server:
 
 ```bash
 npm run dev
 ```
 
-Build for production:
+Build production bundle:
 
 ```bash
 npm run build
 ```
 
-Start production server:
+Run production server:
 
 ```bash
 npm run start
 ```
 
-Lint code:
+Run lint:
 
 ```bash
 npm run lint
@@ -72,6 +70,9 @@ npm run lint
 ```text
 .
 |- public/
+|  |- Icons/
+|  |- Projects/
+|  |- Skills/
 |- src/
 |  |- app/
 |  |  |- globals.css
@@ -93,91 +94,49 @@ npm run lint
 |- tsconfig.json
 ```
 
-## Section-by-Section Walkthrough
+## Runtime Flow
 
-### Intro Screen
+In `src/app/page.tsx`:
 
-File: src/components/IntroScreen.tsx
+1. Render `ScrollProgress`.
+2. Show `IntroScreen` first.
+3. On enter, fade into main portfolio content.
+4. Use one internal scroll container with `snap-y snap-mandatory`.
+5. Define `--nav-h` once and reuse it in each section.
 
-1. Full-screen entry layer shown first.
-2. Displays brand title and supporting copy.
-3. Click interaction exits intro and reveals the main site.
-4. Uses Framer Motion for fade and timing choreography.
+## Section Map
 
-### Navigation Bar
+1. `Hero` -> `#home`
+2. `Projects` -> `#work`
+3. `Skills` -> `#skills`
+4. `Contact` -> `#contact`
 
-File: src/components/NavBar.tsx
+Keep navbar links and section IDs synchronized.
 
-1. Fixed header anchored at the top.
-2. Desktop links for section anchors.
-3. Mobile menu toggle for small screens.
-4. Uses motion transitions for mount and hover states.
+## Content and Assets
 
-### Hero Section
+1. Hero image: `public/profile.jpg`
+2. Resume CTA: `public/resume.pdf`
+3. Project thumbnails: `public/Projects/*`
+4. Skill icons: `public/Skills/*`
 
-File: src/components/Hero.tsx
+## Contact Form
 
-1. First main panel after intro.
-2. Split layout: text/call-to-action on left, visual portrait on right.
-3. Staggered reveal animations and smooth button micro-interactions.
-4. Height is constrained to viewport minus navbar via CSS variable.
+`src/components/Contact.tsx` posts to Formspree:
 
-### Projects Section
+```text
+https://formspree.io/f/mnngdlzv
+```
 
-File: src/components/Projects.tsx
-
-1. Curated project cards with large visual previews.
-2. Hover-driven expansion feel and metadata reveal on desktop.
-3. Maintains fixed storytelling panel rhythm.
-4. Uses responsive card layout with motion transitions.
-
-### Skills Section
-
-File: src/components/Skills.tsx
-
-1. Bento-style capability grid.
-2. Skill cards grouped by domain (frameworks, AI/core logic, infra, media).
-3. Dark inverse-surface visual mode for contrast in narrative flow.
-4. Uses hover interactions and staggered section entrance.
-
-### Contact Section
-
-File: src/components/Contact.tsx
-
-1. Final panel with contact form and social links.
-2. Split layout for messaging + form.
-3. Includes lightweight footer links and portfolio signature text.
-4. Keeps the same viewport-minus-header sizing convention.
-
-### Scroll Progress
-
-File: src/components/ScrollProgress.tsx
-
-1. Thin progress indicator fixed at top.
-2. Width reflects current page scroll percentage.
-3. Color shifts for better contrast in darker sections.
-
-## App Composition Flow
-
-File: src/app/page.tsx
-
-1. Renders ScrollProgress globally.
-2. Shows IntroScreen first using state + AnimatePresence.
-3. After intro exit, mounts NavBar + all portfolio sections.
-4. Enables snap-based full-panel scrolling and defines navbar height variable.
-
-## Styling System
-
-File: src/app/globals.css
-
-1. Tailwind v4 setup via @import.
-2. Design tokens are defined as CSS variables in :root.
-3. Includes cinematic background utility and optional grain texture class.
-4. Global typography and surface colors are tuned for premium editorial feel.
+If you fork this project, replace that endpoint with your own.
 
 ## Notes for Contributors
 
-1. Keep section IDs aligned with navbar links.
-2. Preserve the viewport-minus-navbar layout rule when adding new sections.
-3. Reuse existing easing style for motion consistency.
-4. Prefer updating tokens in globals.css instead of hardcoding colors.
+1. Preserve snap-section behavior (`100svh`) for consistent pacing.
+2. Keep `pt-[var(--nav-h)]` on full-screen sections so content clears the fixed nav.
+3. Prefer updating design tokens in `src/app/globals.css` instead of hardcoded colors.
+4. Keep motion timing and easing consistent across sections.
+
+## Next.js Version Note
+
+This project uses Next.js 16, which includes changes from older versions. If you modify framework-level behavior, check docs under `node_modules/next/dist/docs/` first.

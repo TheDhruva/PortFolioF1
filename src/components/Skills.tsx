@@ -1,9 +1,24 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Hexagon, Cpu, Database, Play } from "lucide-react";
+/**
+ * Skills — Bento grid of 4 skill categories.
+ *
+ * Animation strategy:
+ * - ALL Framer Motion removed from this component
+ * - Entrance: IntersectionObserver → "is-visible" → .card-reveal CSS stagger
+ * - Card hover glow: .skill-inset-glow (CSS box-shadow transition)
+ * - Icon hover: .skill-icon-wrap (CSS transform)
+ * - Bottom shimmer: .skill-shimmer (CSS scaleX transition)
+ * - Background tint: plain CSS group-hover via Tailwind
+ *
+ * Responsive:
+ * - Mobile/sm: 2×2 grid (auto placement, no explicit grid-area)
+ * - md+: 12-col / 2-row bento with explicit [grid-area] placement
+ */
 
-const EASE = [0.16, 1, 0.3, 1] as const;
+import { Hexagon, Cpu, Database, Play } from "lucide-react";
+import { useAudio } from "@/context/AudioContext";
+import { useInView } from "@/hooks/useInView";
 
 const SKILLS = [
   {
@@ -11,36 +26,36 @@ const SKILLS = [
     icon: Hexagon,
     title: "Frameworks",
     tags: ["Next.js", "React 19", "Node.js", "TailwindCSS", "FastAPI", "Streamlit"],
-    iconPaths: [
-      "/skills/nextjs.svg",
-      "/skills/react.svg",
-      "/skills/nodejs.svg",
-      "/skills/tailwind.svg",
-      "/skills/fastapi.svg",
-      "/skills/streamlit.svg",
+    icons: [
+      { path: "/skills/nextjs.svg",    label: "Next.js"   },
+      { path: "/skills/react.svg",     label: "React"     },
+      { path: "/skills/nodejs.svg",    label: "Node.js"   },
+      { path: "/skills/tailwind.svg",  label: "Tailwind"  },
+      { path: "/skills/fastapi.svg",   label: "FastAPI"   },
+      { path: "/skills/streamlit.svg", label: "Streamlit" },
     ],
-    /*
-     * Explicit grid placement to guarantee the 2-row bento layout:
-     * Row 1: Card 1 (col 1-7) + Card 2 (col 8-12, rowspan 2)
-     * Row 2: Card 3 (col 1-4) + Card 4 (col 5-7) + Card 2 continues
-     */
     gridArea: "md:[grid-area:1/1/2/8]",
+    cols: 6,
+    iconSize: "w-7 h-7 sm:w-8 sm:h-8",
+    large: false,
   },
   {
     id: 2,
     icon: Cpu,
     title: "Core Logic & AI",
     tags: ["Python", "TypeScript", "C++ (DSA)", "LangChain", "OpenAI API", "RAG", "XGBoost", "Scikit-learn"],
-    iconPaths: [
-      "/skills/python.svg",
-      "/skills/typescript.svg",
-      "/skills/cplusplus.svg",
-      "/skills/openai.svg",
-      "/skills/huggingface.svg",
-      "/skills/pandas.svg",
-      "/skills/scikitlearn.svg",
+    icons: [
+      { path: "/skills/python.svg",      label: "Python"      },
+      { path: "/skills/typescript.svg",  label: "TypeScript"  },
+      { path: "/skills/cplusplus.svg",   label: "C++"         },
+      { path: "/skills/openai.svg",      label: "OpenAI"      },
+      { path: "/skills/huggingface.svg", label: "HuggingFace" },
+      { path: "/skills/pandas.svg",      label: "Pandas"      },
+      { path: "/skills/scikitlearn.svg", label: "Sklearn"     },
     ],
     gridArea: "md:[grid-area:1/8/3/13]",
+    cols: 3,
+    iconSize: "w-8 h-8 sm:w-9 sm:h-9",
     large: true,
   },
   {
@@ -48,196 +63,187 @@ const SKILLS = [
     icon: Database,
     title: "Infrastructure",
     tags: ["AWS", "Vercel", "Docker", "PostgreSQL", "MongoDB", "Convex", "Clerk"],
-    iconPaths: [
-      "/skills/aws.svg",
-      "/skills/docker.svg",
-      "/skills/postgres.svg",
-      "/skills/mongodb.svg",
-      "/skills/vercel.svg",
-      "/skills/convex.svg",
-      "/skills/clerk.svg",
+    icons: [
+      { path: "/skills/aws.svg",      label: "AWS"        },
+      { path: "/skills/docker.svg",   label: "Docker"     },
+      { path: "/skills/postgres.svg", label: "PostgreSQL" },
+      { path: "/skills/mongodb.svg",  label: "MongoDB"    },
+      { path: "/skills/vercel.svg",   label: "Vercel"     },
+      { path: "/skills/convex.svg",   label: "Convex"     },
+      { path: "/skills/clerk.svg",    label: "Clerk"      },
     ],
     gridArea: "md:[grid-area:2/1/3/5]",
+    cols: 4,
+    iconSize: "w-6 h-6 sm:w-7 sm:h-7",
+    large: false,
   },
   {
     id: 4,
     icon: Play,
     title: "Digital Media",
     tags: ["YouTube Strategy", "Video Production", "10k+ Views"],
-    iconPaths: [
-      "/skills/youtube.svg",
-      "/skills/premiere.svg",
+    icons: [
+      { path: "/skills/youtube.svg",  label: "YouTube"  },
+      { path: "/skills/premiere.svg", label: "Premiere" },
     ],
     gridArea: "md:[grid-area:2/5/3/8]",
+    cols: 2,
+    iconSize: "w-8 h-8 sm:w-10 sm:h-10",
+    large: false,
   },
 ];
 
-const containerVariants = {
-  hidden: {},
-  show:   { transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
-};
-const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
-};
-
 export default function Skills() {
+  const { play }     = useAudio();
+  const sectionRef   = useInView<HTMLElement>();
+
   return (
     <section
       id="skills"
-      /*
-       * snap-section = h-[100svh] (set in globals.css).
-       * flex-col + justify-center vertically centres the inner block.
-       * pt-[var(--nav-h)] pushes content below the fixed nav.
-       */
+      ref={sectionRef}
       className="snap-section flex flex-col justify-center
                  bg-[var(--color-inverse-surface)]
-                 px-8 pt-[var(--nav-h)]"
+                 px-5 sm:px-8 pt-[var(--nav-h)]"
+      style={{ transform: "translateZ(0)" }}
     >
-      <div className="max-w-[1440px] mx-auto w-full flex flex-col h-full pb-6">
+      <div className="max-w-[1440px] mx-auto w-full flex flex-col h-full pb-4 md:pb-6">
 
         {/* ── Section Header ──────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.9, ease: EASE }}
-          className="flex flex-col gap-2 mb-6 mt-4"
-        >
-          <span className="uppercase tracking-[0.22em] text-[10px]
+        <div className="flex flex-col gap-1.5 mb-4 md:mb-5 mt-3 md:mt-4">
+          <span className="reveal reveal-d0
+                           uppercase tracking-[0.22em] text-[10px]
                            text-[var(--color-outline-variant)] font-light">
             Technical Arsenal
           </span>
-          <h2 className="font-black tracking-[-0.04em] text-[clamp(1.8rem,4vw,3rem)]
+          <h2 className="reveal reveal-d1
+                         font-black tracking-[-0.04em]
+                         text-[clamp(1.7rem,4vw,3rem)]
                          text-[var(--color-inverse-primary)]">
             Capabilities
           </h2>
-        </motion.div>
+        </div>
 
         {/* ── Bento Grid ──────────────────────────────────── */}
-        {/*
-         * 12-column, 2-row explicit grid.
-         * Each card uses [grid-area] for deterministic placement.
-         * Height is computed to fill the space below nav + header
-         * without overflowing the 100svh section boundary.
-         */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-60px" }}
-          className="grid grid-cols-1 md:grid-cols-12 md:grid-rows-2 gap-4 flex-1
-                     h-auto"
-          style={{ maxHeight: "calc(100svh - var(--nav-h) - 9rem)" }}
+        <div
+          className="grid grid-cols-2 md:grid-cols-12 md:grid-rows-2
+                     gap-2 md:gap-3 flex-1"
+          style={{ maxHeight: "calc(100svh - var(--nav-h) - 8rem)" }}
         >
           {SKILLS.map(skill => {
             const Icon = skill.icon;
             return (
-              <motion.div
+              <div
                 key={skill.id}
-                variants={cardVariants}
+                onMouseEnter={() => play("cursorHover")}
                 className={`
                   ${skill.gridArea}
-                  relative group overflow-hidden rounded-2xl
-                  flex flex-col min-h-[140px]
+                  card-reveal
+                  relative group overflow-hidden rounded-xl md:rounded-2xl
+                  flex flex-col min-h-[120px] md:min-h-0
+                  cursor-default
                 `}
               >
-                {/* Tonal background — no borders (design-system rule) */}
-                <div className="absolute inset-0 rounded-2xl
-                                bg-white/[0.03] group-hover:bg-white/[0.06]
+                {/* Card background tint */}
+                <div className="absolute inset-0 rounded-xl md:rounded-2xl
+                                bg-white/[0.035] group-hover:bg-white/[0.065]
                                 transition-colors duration-500" />
 
-                {/* Inset glow on hover */}
-                <motion.div
-                  className="absolute inset-0 rounded-2xl pointer-events-none"
-                  initial={{ boxShadow: "inset 0 0 0px rgba(255,255,255,0)" }}
-                  whileHover={{ boxShadow: "inset 0 0 60px rgba(255,255,255,0.06)" }}
-                  transition={{ duration: 0.4, ease: EASE }}
-                />
+                {/* Inset glow — CSS-only, see skill-inset-glow in globals.css */}
+                <div className="skill-inset-glow absolute inset-0 rounded-xl md:rounded-2xl pointer-events-none" />
 
-                {/* ── Content ─────────────────────────────── */}
-                <div className="relative z-10 p-6 md:p-8 flex flex-col justify-between h-full gap-4">
+                {/* ── Card body ───────────────────────────── */}
+                <div className="relative z-10 p-4 md:p-5 lg:p-6
+                                flex flex-col justify-between h-full gap-2 md:gap-3">
 
-                  {/* Top: Lucide icon + tech icons */}
-                  <div className="flex justify-between items-start gap-3">
-                    <motion.div
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ duration: 0.3, ease: EASE }}
-                      className="shrink-0"
-                    >
+                  {/* Header row: icon + title */}
+                  <div className="flex justify-between items-start">
+                    {/* skill-icon-wrap: CSS rotate/scale on hover */}
+                    <div className="skill-icon-wrap">
                       <Icon
-                        className={`text-white/20 group-hover:text-white/70
-                                   transition-colors duration-500
-                                   ${skill.large ? "w-11 h-11" : "w-9 h-9"}`}
+                        className={`text-white/20 group-hover:text-white/60
+                                    transition-colors duration-500
+                                    ${skill.large ? "w-8 h-8 md:w-10 md:h-10" : "w-6 h-6 md:w-8 md:h-8"}`}
                         strokeWidth={1}
                       />
-                    </motion.div>
-
-                    {/*
-                     * Tech icon strip — limited to 5 shown so they don't
-                     * overflow small cards. `onError` hides any missing SVGs
-                     * gracefully without breaking the layout.
-                     */}
-                    <div className="flex flex-wrap justify-end gap-2 items-center
-                                    opacity-50 group-hover:opacity-100
-                                    transition-opacity duration-400
-                                    max-w-[60%]">
-                      {skill.iconPaths.slice(0, 5).map((path, i) => (
-                        <img
-                          key={i}
-                          src={path}
-                          alt=""
-                          aria-hidden="true"
-                          className="w-5 h-5 object-contain grayscale invert
-                                     group-hover:grayscale-0 group-hover:invert-0
-                                     transition-all duration-400"
-                          onError={e => {
-                            (e.currentTarget as HTMLImageElement).style.display = "none";
-                          }}
-                        />
-                      ))}
                     </div>
-                  </div>
-
-                  {/* Bottom: title + pill tags */}
-                  <div className="flex flex-col gap-3">
                     <h4 className={`font-bold tracking-tight leading-tight
+                                    text-right
                                     text-[var(--color-inverse-primary)]
-                                    ${skill.large ? "text-xl md:text-2xl" : "text-lg md:text-xl"}`}>
+                                    ${skill.large
+                                      ? "text-sm md:text-base lg:text-xl"
+                                      : "text-xs md:text-sm lg:text-lg"
+                                    }`}>
                       {skill.title}
                     </h4>
+                  </div>
 
-                    {/* Skill pills — only show up to 5 in smaller cards to avoid overflow */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {(skill.large ? skill.tags : skill.tags.slice(0, 5)).map((tag, i) => (
-                        <span
-                          key={i}
-                          className="px-2.5 py-0.5 text-[10px] md:text-[11px] font-medium
-                                     tracking-wide rounded-full
-                                     bg-white/[0.05] border border-white/[0.08]
-                                     text-[var(--color-outline-variant)]
-                                     group-hover:text-white/80 group-hover:border-white/15
-                                     transition-colors duration-300"
-                        >
-                          {tag}
+                  {/* Icon grid */}
+                  <div
+                    className="grid gap-x-1.5 md:gap-x-2 gap-y-2 md:gap-y-3
+                                flex-1 content-center py-0.5"
+                    style={{
+                      gridTemplateColumns: `repeat(${
+                        /* On mobile, cap at 4 columns for readability */
+                        Math.min(skill.cols, 4)
+                      }, minmax(0, 1fr))`
+                    }}
+                  >
+                    {skill.icons.map((ic, i) => (
+                      <div key={i} className="flex flex-col items-center gap-1 group/icon">
+                        <div className="p-1.5 md:p-2 rounded-lg md:rounded-xl bg-white/[0.04]
+                                        group-hover/icon:bg-white/[0.09]
+                                        transition-colors duration-300">
+                          <img
+                            src={ic.path}
+                            alt={ic.label}
+                            loading="lazy"
+                            decoding="async"
+                            className={`${skill.iconSize} object-contain
+                                        grayscale invert opacity-60
+                                        group-hover:grayscale-0 group-hover:invert-0
+                                        group-hover:opacity-100
+                                        transition-all duration-400`}
+                            onError={e => {
+                              (e.currentTarget as HTMLImageElement)
+                                .parentElement!.style.display = "none";
+                            }}
+                          />
+                        </div>
+                        <span className="text-[7px] md:text-[8px] uppercase tracking-[0.1em] md:tracking-[0.12em]
+                                         text-white/30 group-hover:text-white/60
+                                         transition-colors duration-300
+                                         text-center leading-none hidden sm:block">
+                          {ic.label}
                         </span>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Tag pills */}
+                  <div className="flex flex-wrap gap-1">
+                    {(skill.large ? skill.tags : skill.tags.slice(0, 3)).map((tag, i) => (
+                      <span
+                        key={i}
+                        className="px-1.5 md:px-2 py-0.5 text-[8px] md:text-[9px] font-medium
+                                   tracking-wide rounded-full
+                                   bg-white/[0.04] border border-white/[0.07]
+                                   text-[var(--color-outline-variant)]
+                                   group-hover:text-white/70 group-hover:border-white/12
+                                   transition-colors duration-300"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                 </div>
 
-                {/* Bottom shimmer line on hover */}
-                <motion.div
-                  className="absolute bottom-0 left-0 h-[1px] w-full
-                              bg-gradient-to-r from-white/50 via-white/20 to-transparent"
-                  initial={{ scaleX: 0, originX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.5, ease: EASE }}
-                />
-              </motion.div>
+                {/* Bottom shimmer — CSS only, see .skill-shimmer in globals.css */}
+                <div className="skill-shimmer absolute bottom-0 left-0 h-[1px] w-full
+                                bg-gradient-to-r from-white/50 via-white/20 to-transparent" />
+              </div>
             );
           })}
-        </motion.div>
+        </div>
 
       </div>
     </section>

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body className="bg-[var(--color-surface)] text-[var(--color-on-surface)] antialiased overflow-x-hidden">
         {/* Global grain texture */}
         <div className="grain-overlay" aria-hidden="true" />
