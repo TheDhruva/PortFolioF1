@@ -30,13 +30,13 @@ export type SfxKey = keyof typeof SFX;
 
 /* ── SFX volumes ──────────────────────────────────────────── */
 const SFX_VOL: Record<SfxKey, number> = {
-  buttonClick:   0.5,
-  buttonHover:   0.25,
-  cursorHover:   0.01,
-  elementAppear: 0.35,
-  inputFocus:    0.05,
-  sectionSnap:   0.4,
-  submitSuccess: 0.55,
+  buttonClick:   0.45,
+  buttonHover:   0.45,
+  cursorHover:   0.15,
+  elementAppear: 0.45,
+  inputFocus:    0.09,
+  sectionSnap:   0.09,
+  submitSuccess: 0.25,
 };
 
 /* ── Ambient Config ───────────────────────────────────────── */
